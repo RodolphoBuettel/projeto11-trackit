@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 
-export default function ListaDeHabitos({d}){
+export default function DiasDosHabitos({d}){
 
     return(
         

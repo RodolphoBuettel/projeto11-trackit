@@ -9,9 +9,11 @@ function UserProvider({ children }) {
   const [senha, setSenha] = useState("");
   const [img, setImg] = useState("");
   const [token, setToken] = useState("");
+  const [display, setDisplay] = useState("none");
 
   return (
-    <UserContext.Provider value={{ url, setUrl, email, setEmail, senha, setSenha, img, setImg, token, setToken}}>
+    <UserContext.Provider value={{ url, setUrl, email, setEmail, senha, setSenha, img, setImg, token, setToken,
+    setDisplay, display}}>
       {children}
     </UserContext.Provider>
   );
