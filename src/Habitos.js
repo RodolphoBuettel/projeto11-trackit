@@ -10,7 +10,6 @@ export default function Habitos() {
     const { img, token, setDisplay} = useContext(UserContext);
    
     
-
     function AdicionarHabito() {
         setDisplay("");
     }

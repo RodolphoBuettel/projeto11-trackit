@@ -3,39 +3,68 @@ import styled from "styled-components"
 import { useContext } from "react";
 import UserContext from "./contextApi";
 import { useState } from "react";
+import axios from "axios";
 
-export default function CardAdd(){
+export default function CardAdd() {
 
     const days = ["D", "S", "T", "Q", "Q", "S", "S"];
     const [habits, setHabits] = useState("");
-    const {display} = useContext(UserContext);
+    const { display, dias, token } = useContext(UserContext);
+    
+     
+    console.log(dias);
+    console.log(habits);
 
-    return(
+    function CriarHabito(e) {
+        e.preventDefault();
+
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+
+        const habito = {
+            name: habits,
+            days: dias
+        }
+
+        const promisse = axios.post(URL, habito,
+            {
+                headers:
+                    {"Authorization": ` Bearer${token}` }
+            });
+
+        promisse.then((res) => {
+            console.log(res);
+        });
+
+        console.log(habito);
+
+    }
+
+    return (
         <Mensagem display={display}>
-                <form>
-                    <input id="habits"
-                        type="text"
-                        value={habits}
-                        onChange={(e) => setHabits(e.target.value)}
-                        placeholder="nome do habito"
-                        required />
-                    <div>
-                        {days.map((d, index) => <DiasDosHabitos d={d} key={index} />)}
-                    </div>
-                        <Cancelar>
-                            <h6>Cancelar</h6>
-                        </Cancelar>
-                        <Salvar>
-                            <h6>Salvar</h6>
-                        </Salvar>
-                </form>
-                <h2>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h2>
-            </Mensagem>
-    ) 
+            <form onSubmit={CriarHabito}>
+                <input id="habits"
+                    type="text"
+                    value={habits}
+                    onChange={(e) => setHabits(e.target.value)}
+                    placeholder="nome do habito"
+                    required />
+                <div>
+                    {days.map((d, index) => <DiasDosHabitos d={d} key={index} i={index} />)}
+                </div>
+                <Cancelar>
+                    <h6>Cancelar</h6>
+                </Cancelar>
+                <Salvar type="submit">
+                    <h6>Salvar</h6>
+                </Salvar>
+            </form>
+            <h2>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h2>
+        </Mensagem>
+    )
 
- }
+}
 
- const Mensagem = styled.div`
+const Mensagem = styled.div`
 left: 10px;
 top:150px;
 box-sizing: border-box;

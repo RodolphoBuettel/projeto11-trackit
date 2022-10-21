@@ -37,7 +37,7 @@ export default function Login() {
             console.log(res.data);
             setImg(res.data.image);
             setToken(res.data.token);
-            navigate("/habitos")
+            navigate("/habitos");
         })
 
         promisse.catch((err) =>
