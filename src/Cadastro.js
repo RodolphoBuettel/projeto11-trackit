@@ -13,8 +13,12 @@ export default function Cadastro() {
 
     const navigate = useNavigate();
 
-    const {setUrl, url, setSenha, senha, setEmail, email} = useContext(UserContext); 
+    // const {setUrl, url, setSenha, senha, setEmail, email} = useContext(UserContext); 
 
+
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [url, setUrl] = useState("");
     const [nome, setNome] = useState("");
     const [disabled, setDisabled] = useState(false);
 
@@ -38,7 +42,7 @@ export default function Cadastro() {
             if (res === undefined) {
                 return (console.log("indo"));
             } else {
-                navigate("/habitos");
+                navigate("/");
             }
 
         })

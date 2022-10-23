@@ -16,7 +16,7 @@ export default function Login() {
     const [load, setLoad] = useState(undefined);
     const [loading, setLoading] = useState("Entrar");
 
-    const { email, setEmail, senha, setSenha, setImg, setToken } = useContext(UserContext);
+    const { email, setEmail, senha, setSenha, setImg, img, setToken } = useContext(UserContext);
 
     const recebe = load;
 
@@ -35,8 +35,9 @@ export default function Login() {
 
         promisse.then((res) => {
             console.log(res.data);
-            setImg(res.data.image);
-            setToken(res.data.token);
+            // setToken(res.data.token);
+            localStorage.setItem('token', JSON.stringify(res.data.token));
+            localStorage.setItem('img', JSON.stringify(res.data.image));
             navigate("/habitos");
         })
 

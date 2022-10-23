@@ -8,24 +8,15 @@ export default function DiasDosHabitos({ d, i }) {
     const { dias, setDias } = useContext(UserContext);
     const [selecionado, setSelecionado] = useState("#FFFFFF");
 
-    function EscolheDia(i) {
-        // if (i != i) {
-        //     setDias([...dias, i]);
-        //     console.log(dias);
-        //     setSelecionado("gray");
-        // }else{
-        //     setDias([dias]);
-        // }
 
-        if (!setDias) {
-            const filteredSeats = dias.filter((d, i) => (d.i === i));
-            setDias([...filteredSeats]);
-            return;
-          }
-          setDias([...dias, i]);
-          setSelecionado("gray");
-          return;
+    function EscolheDia(i) {
+        if (selecionado === "#FFFFFF") {
+            setDias([...dias, i]);
+            setSelecionado("gray");
+        }else{
+            setSelecionado("#FFFFFF");
         }
+    }
 
     return (
 

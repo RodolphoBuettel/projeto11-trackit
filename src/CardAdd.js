@@ -1,19 +1,23 @@
 import DiasDosHabitos from "./DiasDosHabitos";
 import styled from "styled-components"
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import UserContext from "./contextApi";
 import { useState } from "react";
 import axios from "axios";
+import days from "./Days";
+
 
 export default function CardAdd() {
 
-    const days = ["D", "S", "T", "Q", "Q", "S", "S"];
+
     const [habits, setHabits] = useState("");
-    const { display, dias, token } = useContext(UserContext);
-    
-     
+    const { setDisplay, display, dias } = useContext(UserContext);
+
+    const token = JSON.parse(localStorage.getItem('token'));
+
     console.log(dias);
     console.log(habits);
+
 
     function CriarHabito(e) {
         e.preventDefault();
@@ -25,41 +29,43 @@ export default function CardAdd() {
             days: dias
         }
 
-        const promisse = axios.post(URL, habito,
-            {
-                headers:
-                    {"Authorization": ` Bearer${token}` }
-            });
-
-        promisse.then((res) => {
-            console.log(res);
+        const promisse = axios.post(URL, habito, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         });
 
-        console.log(habito);
-
+        promisse.then((res) => {
+            console.log(res.data);
+            localStorage.setItem('habito', JSON.stringify(res.data));
+        });
     }
 
     return (
-        <Mensagem display={display}>
-            <form onSubmit={CriarHabito}>
-                <input id="habits"
-                    type="text"
-                    value={habits}
-                    onChange={(e) => setHabits(e.target.value)}
-                    placeholder="nome do habito"
-                    required />
-                <div>
-                    {days.map((d, index) => <DiasDosHabitos d={d} key={index} i={index} />)}
-                </div>
-                <Cancelar>
-                    <h6>Cancelar</h6>
-                </Cancelar>
-                <Salvar type="submit">
-                    <h6>Salvar</h6>
-                </Salvar>
-            </form>
-            <h2>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h2>
-        </Mensagem>
+        <>
+            <Mensagem display={display}>
+                <form onSubmit={CriarHabito} >
+                    <input id="habits"
+                        type="text"
+                        value={habits}
+                        onChange={(e) => setHabits(e.target.value)}
+                        placeholder="nome do habito"
+                        required />
+                    <div>
+                        {days.map((d, index) => <DiasDosHabitos d={d} key={index} i={index} />)}
+                    </div>
+                    <Cancelar>
+                        <h6>Cancelar</h6>
+                    </Cancelar>
+                    <Salvar type="submit" onClick={() => setDisplay("none")}>
+                        <h6>Salvar</h6>
+                    </Salvar>
+                </form>
+                <h2>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h2>
+               
+            </Mensagem>
+            
+        </>
     )
 
 }
@@ -74,6 +80,7 @@ box-sizing: border-box;
     position: fixed;
 width: 100%;
 h2{
+    display: ${props => props.display};
     font-family: Lexend Deca;
 font-size: 18px;
 font-weight: 400;
@@ -140,3 +147,4 @@ text-align: center;
 border: none;
 color: white;
 `
+

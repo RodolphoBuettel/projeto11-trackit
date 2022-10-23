@@ -1,30 +1,58 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components"
 import UserContext from "./contextApi";
 import curva from "./images/curva.png";
 import CardAdd from "./CardAdd";
+import ListaHabitos from "./ListaHabitos";
+import axios from "axios";
 
 export default function Habitos() {
 
-    
-    const { img, token, setDisplay} = useContext(UserContext);
-   
-    
-    function AdicionarHabito() {
-        setDisplay("");
-    }
+
+    const { setDisplay } = useContext(UserContext);
+    const imagem = JSON.parse(localStorage.getItem('img'));
+  
+    const token = JSON.parse(localStorage.getItem('token'));
+
+      const [habitosCriados, setHabitosCriados] = useState([]);
+      const [diasSelecionados, setDiasSelecionados] = useState([]);
+  
+      useEffect(() => {
+          const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+          const promise = axios.get(URL,
+              {
+                  headers: {
+                      'Authorization': `Bearer ${token}`
+                  }
+              });
+  
+          promise.then((res) => {
+              console.log(res.data);
+              setHabitosCriados(res.data);
+          })
+  
+          promise.catch((err) => {
+              console.log(err.response.data);
+          })
+      }, []);
 
     return (
         <Container>
+           
             <Header>
                 <h2>TrackIt</h2>
-                <div><img src={img} /></div>
+                <div><img src={imagem} /></div>
             </Header>
             <Adicionar>
                 <h1>Meus hábitos</h1>
-                <Button onClick={AdicionarHabito}>+</Button>
+                <Button onClick={() => setDisplay("")}>+</Button>
             </Adicionar>
-            <CardAdd/>
+            <CardAdd />
+            <SegundoContainer>
+            <HabitosCriados>
+                {habitosCriados.map((h) => <ListaHabitos h={h} key={h.id} />)}
+            </HabitosCriados >
+            </SegundoContainer>
             <Fotter>
                 <div>
                     <h3>Hábitos</h3>
@@ -71,7 +99,7 @@ color: #126BA5;
 const Header = styled.div`
     width: 100%;
 height: 70px;
-margin-top: -930px;
+top: 0px;
 position: fixed;
 background: #126BA5;
 display: flex;
@@ -126,6 +154,7 @@ const Roda = styled.div`
     width: 91px;
     bottom: 10px;
 height: 91px;
+left:auto;
 background-color: #52B6FF;
 border-radius: 50%;
 display: flex;
@@ -145,11 +174,12 @@ color: white;
 `
 const Container = styled.div`
 display: flex;
-height: 1000px;
+height: 100%;
 width: 100%;
 background-color: #f2f2f2;
     justify-content: center;
     align-items: center;
+    overflow: scroll;
 `
 const Curva = styled.div`
 margin-top:-30px; 
@@ -161,4 +191,14 @@ margin-right: 20px;
     h4{
         margin-top:28px;
     }
+`
+const HabitosCriados = styled.div`
+    margin-top: 100px;
+    
+`
+
+const SegundoContainer = styled.div`
+    display: flex;
+   justify-content: flex-start;
+   align-items: flex-start;
 `
