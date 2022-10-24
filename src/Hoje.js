@@ -1,22 +1,41 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import HabitsToday from "./HabitsToday";
+import UserContext from "./contextApi";
 
 
 export default function Hoje() {
 
     const imagem = JSON.parse(localStorage.getItem('img'));
-    const [habitosHoje, setHabitosHoje] = useState([]);
+    const {habitosHoje, setHabitosHoje} = useContext(UserContext);
     const token = JSON.parse(localStorage.getItem('token'));
+    const [progressao, setProgressao] = useState("");
 
     let customParseFormat = require('dayjs/plugin/customParseFormat')
     dayjs.extend(customParseFormat);
     require('dayjs/locale/pt-br');
     let today = dayjs().locale('pt-br').format('dddd, DD/MM');
     let diaHoje = today[0].toUpperCase() + today.substring(1);
+
+
+    let i = 0;
+    let porcentagem = 0;
+    let num = 0;
+    function tarefasCompletas(){
+        for (let j = 0; j < habitosHoje.length; j++) {
+            if(habitosHoje[j].done === true){
+                i++;
+                porcentagem = i/habitosHoje.length;
+            }
+            
+        }
+    } 
+    tarefasCompletas();
+    num = (porcentagem*100).toFixed(0);
+
 
     useEffect(() => {
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
@@ -44,8 +63,10 @@ export default function Hoje() {
                 <div><img src={imagem} /></div>
             </Header>
             <Corpo>
-                <Data>
+                <Data porcentagem={porcentagem}>
                     <h3>{diaHoje}</h3>
+                    <h4>{num}% dos hábitos concluídos</h4>
+                    <NenhumFeito>Nenhum hábito concluído ainda</NenhumFeito>
                 </Data>
                 <HabitosCriadosHoje>
                     {habitosHoje.map((h, index) => <HabitsToday h={h} key={index} />)}
@@ -174,9 +195,27 @@ font-size: 22.976px;
 line-height: 29px;
 color: #126BA5;
     }
+    h4{
+        font-family: 'Lexend Deca';
+font-style: normal;
+font-weight: 400;
+font-size: 17.976px;
+line-height: 22px;
+
+color: ${(prop) => prop.porcentagem === 0 ? `#BABABA` : `#8FC549`};
+    }
 `
 const HabitosCriadosHoje = styled.div`
 `
 const Corpo = styled.div`
 margin-top:100px;
+`
+const NenhumFeito = styled.h4`
+   font-family: 'Lexend Deca';
+font-style: normal;
+font-weight: 400;
+font-size: 17.976px;
+line-height: 22px;
+display:${(prop) => prop.porcentagem === 0 ? `` : `none`}; 
+color: #BABABA ;
 `

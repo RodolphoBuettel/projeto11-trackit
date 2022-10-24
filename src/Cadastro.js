@@ -47,7 +47,7 @@ export default function Cadastro() {
 
         })
 
-        promisse.catch((err) => alert(err.response.data));
+        promisse.catch((err) => alert(err.response.data.message));
     }
 
 

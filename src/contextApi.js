@@ -12,10 +12,11 @@ function UserProvider({ children }) {
   const [display, setDisplay] = useState("none");
   const [dias, setDias] = useState("");
   const [mostraMensagem, setMostraMensagem] = useState("");
+  const [habitosHoje, setHabitosHoje] = useState([]);
 
   return (
     <UserContext.Provider value={{ url, setUrl, email, setEmail, senha, setSenha, img, setImg, token, setToken,
-    setDisplay, display, dias, setDias, mostraMensagem, setMostraMensagem}}>
+    setDisplay, display, dias, setDias, mostraMensagem, setMostraMensagem, habitosHoje, setHabitosHoje}}>
       {children}
     </UserContext.Provider>
   );
