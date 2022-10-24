@@ -39,7 +39,11 @@ export default function CardAdd({habitosCriados}) {
         promisse.then((res) => {
             console.log(res.data);
             localStorage.setItem('habito', JSON.stringify(res.data));
+            window.location.reload();
         });
+       promisse.catch((err) => {
+        console.log(err.response.data);
+       });
     }
 
     return (

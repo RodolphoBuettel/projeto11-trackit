@@ -6,12 +6,12 @@ import Dias from "./Dias";
 import excluir from "./images/excluir.png";
 
 export default function ListaHabitos({ h }) {
-
+    
     const id = h.id;
     const token = JSON.parse(localStorage.getItem('token'));
 
     function DeletarHabito() {
-
+        
         const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`;
 
         const promisse = axios.delete(URL,
@@ -21,12 +21,13 @@ export default function ListaHabitos({ h }) {
             });
             promisse.then((res) => {
                 console.log(res);
+                window.location.reload();
             });
             promisse.catch((erro) => {
                 console.log(erro.response.data);
-            })
-
-    }
+            });
+            
+    };
 
     return (
         <Habit>

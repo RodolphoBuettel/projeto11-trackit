@@ -1,40 +1,10 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
-import dayjs from "dayjs";
-import HabitsToday from "./HabitsToday";
+import { Link } from "react-router-dom";
 
-
-export default function Hoje() {
+export default function Historico(){
 
     const imagem = JSON.parse(localStorage.getItem('img'));
-    const [habitosHoje, setHabitosHoje] = useState([]);
-    const token = JSON.parse(localStorage.getItem('token'));
 
-    let customParseFormat = require('dayjs/plugin/customParseFormat')
-    dayjs.extend(customParseFormat);
-    require('dayjs/locale/pt-br');
-    let today = dayjs().locale('pt-br').format('dddd, DD/MM');
-    let diaHoje = today[0].toUpperCase() + today.substring(1);
-
-    useEffect(() => {
-        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
-        const promise = axios.get(URL,
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-        promise.then((res) => {
-            setHabitosHoje(res.data);
-            console.log(res.data);
-        })
-
-        promise.catch((err) => {
-            console.log(err.response.data);
-        })
-    }, []);
 
     return (
 
@@ -43,15 +13,11 @@ export default function Hoje() {
                 <h2>TrackIt</h2>
                 <div><img src={imagem} /></div>
             </Header>
-            <Corpo>
-                <Data>
-                    <h3>{diaHoje}</h3>
-                </Data>
-                <HabitosCriadosHoje>
-                    {habitosHoje.map((h, index) => <HabitsToday h={h} key={index} />)}
-                </HabitosCriadosHoje>
-            </Corpo>
-
+            <Aviso>
+                <h2>
+                    Em breve você poderá ver o histórico dos seus hábitos aqui!
+                </h2>
+            </Aviso>
             <Fotter>
                 <div>
                     <Link to="/habitos"><h3>Hábitos</h3></Link>
@@ -61,12 +27,13 @@ export default function Hoje() {
             <Roda>
                 <Curva>
                     {/* <img src={curva} /> */}
-                    <h4>Hoje</h4>
+                    <Link to="/hoje"><h4>Hoje</h4></Link>
                 </Curva>
             </Roda>
         </Container>
     )
 }
+
 
 const Container = styled.div`
  display: flex;
@@ -164,19 +131,17 @@ margin-right: 20px;
         margin-top:28px;
     }
 `
-const Data = styled.div`
-   margin-bottom: 20px;
-    h3{
-        font-family: 'Lexend Deca';
+const Aviso = styled.div`
+    margin-top: 150px;
+    padding-bottom: 100%;
+h2{
+    
+font-family: 'Lexend Deca';
 font-style: normal;
 font-weight: 400;
-font-size: 22.976px;
-line-height: 29px;
-color: #126BA5;
-    }
-`
-const HabitosCriadosHoje = styled.div`
-`
-const Corpo = styled.div`
-margin-top:100px;
+font-size: 17.976px;
+line-height: 22px;
+
+color: #666666;
+}
 `

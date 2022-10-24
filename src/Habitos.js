@@ -67,7 +67,7 @@ export default function Habitos() {
             <Fotter>
                 <div>
                     <Link to="/habitos"><h3>Hábitos</h3></Link>
-                    <h3>Histórico</h3>
+                    <Link to="/historico"><h3>Histórico</h3></Link>
                 </div>
             </Fotter>
 
