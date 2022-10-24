@@ -6,22 +6,23 @@ import { useState } from "react";
 import axios from "axios";
 import days from "./Days";
 
+export default function CardAdd({habitosCriados}) {
 
-export default function CardAdd() {
-
-
+    console.log(habitosCriados)
     const [habits, setHabits] = useState("");
-    const { setDisplay, display, dias } = useContext(UserContext);
-
+    const { setDisplay, display, dias, mostraMensagem, setMostraMensagem} = useContext(UserContext);
+   
     const token = JSON.parse(localStorage.getItem('token'));
 
-    console.log(dias);
-    console.log(habits);
-
+    if(habitosCriados === []){
+        setMostraMensagem("");
+    }else{
+        setMostraMensagem("none");
+    }
 
     function CriarHabito(e) {
         e.preventDefault();
-
+        setDisplay("none");
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
 
         const habito = {
@@ -43,7 +44,7 @@ export default function CardAdd() {
 
     return (
         <>
-            <Mensagem display={display}>
+            <Mensagem display={display} mostraMensagem={mostraMensagem}>
                 <form onSubmit={CriarHabito} >
                     <input id="habits"
                         type="text"
@@ -54,33 +55,33 @@ export default function CardAdd() {
                     <div>
                         {days.map((d, index) => <DiasDosHabitos d={d} key={index} i={index} />)}
                     </div>
-                    <Cancelar>
+                    <Cancelar onClick={() => setDisplay("none")}>
                         <h6>Cancelar</h6>
                     </Cancelar>
-                    <Salvar type="submit" onClick={() => setDisplay("none")}>
+                    <Salvar type="submit">
                         <h6>Salvar</h6>
                     </Salvar>
                 </form>
                 <h2>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h2>
                
             </Mensagem>
-            
+           
         </>
     )
 
 }
 
 const Mensagem = styled.div`
-left: 10px;
-top:150px;
+margin-top: 30px;
+margin-bottom: 120px;
 box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
-    height: 74px;
-    position: fixed;
-width: 100%;
-h2{
+    height: 74px; 
     display: ${props => props.display};
+ width: 340px;
+h2{
+    display: ${props => props.mostraMensagem};
     font-family: Lexend Deca;
 font-size: 18px;
 font-weight: 400;

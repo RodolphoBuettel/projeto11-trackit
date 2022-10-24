@@ -1,10 +1,22 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 export default function Dias({ d, i, diasDoHabito }) {
-    
+
     const [selecionado, setSelecionado] = useState("");
+
+    useEffect(() => {
+
+        for (let cont = 0; cont <= diasDoHabito.length; cont++) {
+            if (i === diasDoHabito[cont]) {
+                return (setSelecionado("gray"));
+            } else {
+                setSelecionado("");
+            }
+        }
+    }, []);
+
 
     return (
         <D selecionado={selecionado}>

@@ -4,10 +4,10 @@ import styled from "styled-components";
 import days from "./Days";
 import Dias from "./Dias";
 import excluir from "./images/excluir.png";
-export default function HabitosCriados({ h }) {
+
+export default function ListaHabitos({ h }) {
 
     const id = h.id;
-    console.log(id);
     const token = JSON.parse(localStorage.getItem('token'));
 
     function DeletarHabito() {
@@ -31,7 +31,7 @@ export default function HabitosCriados({ h }) {
     return (
         <Habit>
             <img src={excluir} onClick={DeletarHabito} />
-            <Nome>{h.name} </Nome>
+            <Nome>{h.name}</Nome>
             <div>
                 {days.map((d, index) => <Dias d={d} key={index} i={index} diasDoHabito={h.days} />)}
             </div>

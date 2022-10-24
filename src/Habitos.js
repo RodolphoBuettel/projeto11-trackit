@@ -5,65 +5,79 @@ import curva from "./images/curva.png";
 import CardAdd from "./CardAdd";
 import ListaHabitos from "./ListaHabitos";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+
 
 export default function Habitos() {
 
+    const { setDisplay, setMostraMensagem } = useContext(UserContext);
 
-    const { setDisplay } = useContext(UserContext);
     const imagem = JSON.parse(localStorage.getItem('img'));
-  
     const token = JSON.parse(localStorage.getItem('token'));
 
-      const [habitosCriados, setHabitosCriados] = useState([]);
-      const [diasSelecionados, setDiasSelecionados] = useState([]);
-  
-      useEffect(() => {
-          const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
-          const promise = axios.get(URL,
-              {
-                  headers: {
-                      'Authorization': `Bearer ${token}`
-                  }
-              });
-  
-          promise.then((res) => {
-              console.log(res.data);
-              setHabitosCriados(res.data);
-          })
-  
-          promise.catch((err) => {
-              console.log(err.response.data);
-          })
-      }, []);
+    const [habitosCriados, setHabitosCriados] = useState([]);
+    const [diasSelecionados, setDiasSelecionados] = useState([]);
+
+    useEffect(() => {
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+        const promise = axios.get(URL,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+        promise.then((res) => {
+            console.log(res.data);
+            setHabitosCriados(res.data);
+        })
+
+        promise.catch((err) => {
+            console.log(err.response.data);
+        })
+    }, []);
+
+    function AddHabito() {
+        setDisplay("");
+        if (habitosCriados === []) {
+            setMostraMensagem("");
+        } else {
+            setMostraMensagem("none");
+        }
+
+    }
 
     return (
         <Container>
-           
             <Header>
                 <h2>TrackIt</h2>
-                <div><img src={imagem} /></div>
+                <div><img src={imagem}/></div>
             </Header>
+            <SegundoContainer>
             <Adicionar>
                 <h1>Meus hábitos</h1>
-                <Button onClick={() => setDisplay("")}>+</Button>
+                <Button onClick={AddHabito}>+</Button>
             </Adicionar>
-            <CardAdd />
-            <SegundoContainer>
-            <HabitosCriados>
-                {habitosCriados.map((h) => <ListaHabitos h={h} key={h.id} />)}
-            </HabitosCriados >
+                <CardAdd habitosCriados={habitosCriados} />
+                <HabitosCriados>
+                    {habitosCriados.map((h) => <ListaHabitos h={h} key={h.id} />)}
+                </HabitosCriados >
             </SegundoContainer>
+
             <Fotter>
                 <div>
-                    <h3>Hábitos</h3>
+                    <Link to="/habitos"><h3>Hábitos</h3></Link>
                     <h3>Histórico</h3>
                 </div>
             </Fotter>
+
             <Roda>
-                <Curva>
-                    <img src={curva} />
-                    <h4>Hoje</h4>
-                </Curva>
+                <Link to="/hoje">
+                    <Curva>
+                        <img src={curva} />
+                        <Link to="/hoje"><h4>Hoje</h4></Link>
+                    </Curva>
+                </Link>
             </Roda>
         </Container>
     )
@@ -80,10 +94,7 @@ border-radius: 4.63636px;
 color:white;
 `
 const Adicionar = styled.div`
-top:100px;
 width: 100%;
-left: 10px;
-position: fixed;
     display:flex;
     justify-content: space-between;
     h1{
@@ -169,6 +180,7 @@ line-height: 22px;
 letter-spacing: 0em;
 text-align: center;
 color: white;
+padding-top: 20px;
  }
 
 `
@@ -176,13 +188,13 @@ const Container = styled.div`
 display: flex;
 height: 100%;
 width: 100%;
+padding-bottom: 100%;
 background-color: #f2f2f2;
     justify-content: center;
     align-items: center;
-    overflow: scroll;
 `
 const Curva = styled.div`
-margin-top:-30px; 
+margin-top:-70px; 
 margin-right: 20px; 
     img{
         position: fixed;
@@ -193,12 +205,8 @@ margin-right: 20px;
     }
 `
 const HabitosCriados = styled.div`
-    margin-top: 100px;
-    
+    margin-top: 20px;
 `
-
 const SegundoContainer = styled.div`
-    display: flex;
-   justify-content: flex-start;
-   align-items: flex-start;
+   margin-top: 90px;
 `

@@ -5,13 +5,11 @@ import { UserProvider } from "./contextApi";
 import Login from "./Login";
 import Cadastro from "./Cadastro";
 import Habitos from "./Habitos";
+import Hoje from "./Hoje";
 
 import GlobalStyle from "./GlobalStyle";
 
 export default function App() {
-
-   
-
 
     return (
         <UserProvider>
@@ -21,7 +19,7 @@ export default function App() {
                 <Route path="/" element={<Login />} />
                 <Route path="/cadastro" element={<Cadastro />} />
                 <Route path="/habitos" element={<Habitos />} />
-                {/* <Route path="/hoje" element={<Hoje/>}/> */}
+                <Route path="/hoje" element={<Hoje/>}/>
                 {/* <Route path="/historico" element={<Historico/>}/> */}
             </Routes>
         </BrowserRouter>
