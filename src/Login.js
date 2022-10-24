@@ -13,16 +13,14 @@ import UserContext from "./contextApi";
 export default function Login() {
 
     const navigate = useNavigate();
-    const [load, setLoad] = useState(undefined);
     const [loading, setLoading] = useState("Entrar");
 
     const { email, setEmail, senha, setSenha, setImg, img, setToken } = useContext(UserContext);
 
-    const recebe = load;
 
     function Logar(e) {
         e.preventDefault();
-
+        setLoading("...");
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
 
         const user = {
@@ -43,6 +41,7 @@ export default function Login() {
 
         promisse.catch((err) =>
             alert(err.response.data.message));
+            setLoading("Entrar");
     }
 
 
