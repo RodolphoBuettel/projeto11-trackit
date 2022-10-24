@@ -7,7 +7,7 @@ import coluna2 from "./images/coluna2.png";
 import coluna3 from "./images/coluna3.png";
 import axios from "axios";
 import { useContext, useState } from "react";
-import { Audio } from 'react-loader-spinner'
+import { ThreeDots } from "react-loader-spinner";
 import UserContext from "./contextApi";
 
 export default function Login() {
@@ -20,7 +20,16 @@ export default function Login() {
 
     function Logar(e) {
         e.preventDefault();
-        setLoading("...");
+        setLoading(<ThreeDots 
+            height="40" 
+            width="40" 
+            radius="9"
+            color="white" 
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={true}
+             />);
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
 
         const user = {
@@ -41,7 +50,7 @@ export default function Login() {
 
         promisse.catch((err) =>
             alert(err.response.data.message));
-            setLoading("Entrar");
+            // setLoading("Entrar");
     }
 
 
@@ -154,6 +163,9 @@ border: none;
 background: #52B6FF;
 border-radius: 4.63636px;
 color:white;
+display: flex;
+align-items: center;
+justify-content: center;
 `
 const Cadastre_se = styled.div`
     width: 100%;
